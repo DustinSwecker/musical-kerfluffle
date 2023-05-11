@@ -1,5 +1,4 @@
 const mysql = require('mysql2');
-const util = require('util');
 require('dotenv').config();
 
 
@@ -16,15 +15,12 @@ const db = mysql.createConnection(
     console.log(`Connected to the employeetracker_db database.`)
 );
 
-const query = util.promisify(db.query).bind(db);
 
-const createDatabaseIfNotExist = () => {
-    
+
+const createDatabaseIfNotExist = () => {    
     db.query('CREATE DATABASE IF NOT EXISTS employeetracker_db;', (err, results)=> {
-        if (err) {
-            console.log(err);
-        }
-    }); 
+       err ? console.log(err) : console.log('Database exists or was created');
+        });
 };
 
 const viewAllEmployees = () => {
@@ -65,21 +61,6 @@ const viewAllDepartments = () => {
     })
 };
 
-const getAllRoles = async () => {
-    await query(`SELECT title AS 'Job Title' FROM role;`, (err,results) => {
-        if (err) {
-            console.log(err);
-        } else {
-            const finalResults = Promise.all(results.map(async function(results) {
-            const parsedData = await results['Job Title'];
-            return parsedData
-            }));
-        }
-    });
-};
-
-const roles = await getAllRoles();
-console.log(roles);
 
 const viewAllRoles = () => {
     db.query(`SELECT title AS 'Job Title' FROM role;`, (err,results) => {
@@ -104,6 +85,10 @@ const displayResults = (results) => {
 
 
 
+module.exports = { 
+    viewAllEmployees, 
+    createDatabaseIfNotExist, 
+    viewAllDepartments, 
+    viewAllRoles };
 
-
-module.exports = { viewAllEmployees, createDatabaseIfNotExist, viewAllDepartments, viewAllRoles, getAllRoles }
+module.exports.db = db;

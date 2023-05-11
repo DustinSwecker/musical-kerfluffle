@@ -1,9 +1,13 @@
 const inquirer = require('inquirer');
 
 require('dotenv').config();
-const { viewAllEmployees, createDatabaseIfNotExist, viewAllDepartments, viewAllRoles, getAllRoles } = require('./queries.js')
+const { viewAllEmployees, createDatabaseIfNotExist, viewAllDepartments, viewAllRoles } = require('./helpers/queries.js')
+const { getAllRoles } = require ('./helpers/promise_queries.js');
 
-const roles = await getAllRoles()
+const roles = getAllRoles().then((res)=> {
+    return res;
+});
+
 console.log(roles);
 
 function init () {
