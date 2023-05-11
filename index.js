@@ -1,7 +1,14 @@
 const inquirer = require('inquirer');
 
 require('dotenv').config();
-const { viewAllEmployees, createDatabaseIfNotExist } = require('./queries.js')
+const { viewAllEmployees, createDatabaseIfNotExist, viewAllDepartments, viewAllRoles } = require('./helpers/queries.js')
+const { getAllRoles } = require ('./helpers/promise_queries.js');
+
+const roles = getAllRoles().then((res)=> {
+    return res;
+});
+
+console.log(roles);
 
 function init () {
     inquirer.prompt([
@@ -18,24 +25,34 @@ function init () {
                     createDatabaseIfNotExist();
                     viewAllEmployees();
                     break;
-                case 'Add Employee': createDatabaseIfNotExist();
-                const addEmployeeInput = addEmployeePrompt();
-                    
+                case 'View All Departments':
+                    createDatabaseIfNotExist();
+                    viewAllDepartments();
+                    break;
+                case 'View All Roles':
+                    createDatabaseIfNotExist();
+                    viewAllRoles();
+                    break;                    
+                case 'Add Employee': 
+                    createDatabaseIfNotExist();
+                    addEmployeePrompt();
+                    break;
+                
 
 
             }
         })
-        .then(()=> {
-            //fixed issue with overwriting tables: found at https://stackoverflow.com/questions/63161758/text-in-bash-terminal-getting-overwritten-using-js-node-js-npms-are-inquirer
-            setTimeout(()=> {
-                init();
-            }, 1000);
-        })          
+        // .then(()=> {
+            
+        //     //fixed issue with overwriting tables: found at https://stackoverflow.com/questions/63161758/text-in-bash-terminal-getting-overwritten-using-js-node-js-npms-are-inquirer
+        //     setTimeout(()=> {
+        //         init();
+        //     }, 1000);
+        // })          
 }
-
-
-function addEmployeePrompt () {
-    inquirer.prompt([
+async function addEmployeePrompt () {
+    
+    await inquirer.prompt([
         {
         type: 'input',
         message: "What is the employee's first name?",
@@ -49,8 +66,11 @@ function addEmployeePrompt () {
         {
             type: 'list',
             message: "What is the employees role?",
-            choices: ['Software Engineer', 'Web Developer', 'Front-end Developer', 'Back-end Developer', 'Human Resources', 'Payroll', 'Sales Represenative', 'Data Analyst', 'Data Scientist'],
+            choices: roles,
             name: 'employeeRole'
+        }, 
+        {
+
         }
     ])
     .then((answers)=> {
