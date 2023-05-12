@@ -27,6 +27,9 @@ In order to use the site one must select one of the opening options and then fol
  
 If one was to select 'add to' for any of the tables, a prompt will guide the user to select the options to update and then the app will notify the user upon the data being updated.
 
+A quick video guide on how to operate the app:
+
+https://www.loom.com/share/c9cf4bc441624fb190bfc49d6d7d0914
 
 ## How to Contribute 
 
