@@ -20,7 +20,7 @@ In order to use the site one must select one of the opening options and then fol
 
 ![View of departments table](images/viewalldept.png)
 
-![View of roles table](images/viewalldept.png)
+![View of roles table](images/viewallroles.png)
 
 ![View of employeese table](images/viewallemployees.png)
 
