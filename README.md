@@ -2,7 +2,7 @@
     
 ## Description
 
-This project was built to add in conducting HR type tasks such as adding employees to the database, tracking salaries, tracking dept costs and the like. This will help businesses better handle and track their personnel.
+This project was built to aid in conducting HR type tasks such as adding employees to a database, tracking salaries, tracking dept costs and the like. This will help businesses better handle and track their personnel.
   
 ## Table of Contents 
 
