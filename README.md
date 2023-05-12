@@ -30,7 +30,7 @@ If one was to select 'add to' for any of the tables, a prompt will guide the use
 
 ## How to Contribute 
 
-Anyone who would like to contribute to the project should reach out via email or  via linkedin.>
+Anyone who would like to contribute to the project should reach out via email or  via GitHub.
 
 ## Testing 
 
