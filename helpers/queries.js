@@ -1,13 +1,15 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-
+//creating the connection to the database
 const db = mysql.createConnection(
     {
         host: 'localhost',
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
+        database: process.env.DB_NAME,
+        //added multiple statements in order to process longer sql queries
+        multipleStatements: true
         
 
     },
@@ -16,13 +18,47 @@ const db = mysql.createConnection(
 );
 
 
-
+//function to create database and tables if it's not there
 const createDatabaseIfNotExist = () => {    
-    db.query('CREATE DATABASE IF NOT EXISTS employeetracker_db;', (err, results)=> {
-       err ? console.log(err) : console.log('Database exists or was created');
-        });
+    db.query(`CREATE DATABASE IF NOT EXISTS employeetracker_db;
+
+    USE employeetracker_db;
+    
+    CREATE TABLE IF NOT EXISTS department (
+      id INT NOT NULL AUTO_INCREMENT,
+      department_name VARCHAR(30),
+      PRIMARY KEY (id),
+      UNIQUE (department_name)
+      
+    );
+    
+    CREATE TABLE IF NOT EXISTS role (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(30),
+      salary DECIMAL,
+      department_id INT,
+      UNIQUE (title),
+      FOREIGN KEY (department_id)
+      REFERENCES department(id)
+    );
+    
+    CREATE TABLE IF NOT EXISTS employee (
+      id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+      first_name VARCHAR(30),
+      last_name VARCHAR(30),
+      role_id INT,
+      manager_id INT,
+      FOREIGN KEY (role_id)
+      REFERENCES role(id)
+    );`, (err, results)=> {
+       if (err) {
+        console.log(err);
+       };
+    });
 };
 
+
+//function to view all employees
 const viewAllEmployees = () => {
     
     db.query(`SELECT
@@ -50,9 +86,10 @@ ORDER BY
     
 };
 
+
+//function to view all the departments
 const viewAllDepartments = () => {
     db.query(`SELECT department_name AS name FROM department;`, (err,results)=>{
-        console.log(results);
         if(err) {
             (console.log(err))
          } else {
@@ -61,7 +98,7 @@ const viewAllDepartments = () => {
     })
 };
 
-
+//function to view all the roles
 const viewAllRoles = () => {
     db.query(`SELECT title AS 'Job Title' FROM role;`, (err,results) => {
         if(err) {
@@ -72,23 +109,20 @@ const viewAllRoles = () => {
     })
 }
 
+//function to show the results in a nice spaced out way
 const displayResults = (results) => {
     console.log('\n');
     console.table(results);
     console.log('\n');
 };
 
-// const addEmployee = () => {
-//     db.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id)
-//     VALUES (?, ?, ?, ?);`), 
-// }
-
-
-
+//exporting the queries to the index page
 module.exports = { 
     viewAllEmployees, 
     createDatabaseIfNotExist, 
     viewAllDepartments, 
-    viewAllRoles };
+    viewAllRoles
+ };
 
+ //exporting the database connection to the index page
 module.exports.db = db;
