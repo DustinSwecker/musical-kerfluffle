@@ -1,3 +1,5 @@
+-- just where i played with sql queries to see what worked
+
 -- SELECT
 --     employee.id,
 --     CONCAT(employee.first_name, ' ', employee.last_name) AS 'Employee name',
@@ -14,3 +16,14 @@
 --     ON manager.id = employee.manager_id
 -- ORDER BY
 --     employee.last_name;
+
+-- USE employeetracker_db;
+-- SELECT r.title,
+--     CONCAT(employee.first_name, ' ', employee.last_name) AS 'Employee Name'
+-- FROM role r
+-- CROSS JOIN employee employee
+--     ON employee.role_id = r.id FOR UPDATE;
+-- UPDATE role r
+-- SET r.title = 'Database Engineer'
+-- WHERE 'Employee Name' = "Dan Marino"
+-- ORDER by 'Employee Name';
